@@ -1,7 +1,7 @@
 import { getUserInput } from "./helpers/functions.js";
-import Field, { field } from "./helpers/generateField.js";
+import Field from "./helpers/generateField.js";
 
-const gameField = new Field(field)
+const gameField = new Field()
 let moveResult = true
 
 while (moveResult === true) {

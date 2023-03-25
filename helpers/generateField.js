@@ -1,16 +1,26 @@
 class Field {
+    static pathCharacter = '*'
+    static hatCharacter = '^'
+    static holeCharacter = 'O'
+    static fieldCharacter = '░'
     #field
     #pathCharacterIndex
     #hatIndex
     constructor(field) {
-        this.#field = this.generateField()
-        this.pathCharacter = '*'
-        this.hatCharacter = '^'
-        this.holeCharacter = 'O'
-        this.fieldCharacter = '░'
+        this.#field = Field.generateField()
         this.#initializeFieldProperties()
     }
     static generateField() {
+        const randomIndex = Math.floor(Math.random() * 11)
+        const randomField = Array(10).fill().map(() => {
+            return Array(10).fill().map(() => Field.fieldCharacter )
+        })
+
+        console.log(randomField)
+
+        //put characters in array based on percent
+        //shuffle array rows
+
         return [
             ['*', 'O', '░', '░', '░', '░', '░'],
             ['░', 'O', '░', 'O', 'O', '░', '░'],
@@ -28,8 +38,8 @@ class Field {
     }
     #initializeFieldProperties() {
         for (let i = 0; i < this.#field.length - 1; i++) {
-            let pathCharIndex = this.#field[i].indexOf(this.pathCharacter)
-            let hatIndex = this.#field[i].indexOf(this.hatCharacter)
+            let pathCharIndex = this.#field[i].indexOf(Field.pathCharacter)
+            let hatIndex = this.#field[i].indexOf(Field.hatCharacter)
             if (pathCharIndex !== -1) {
                 this.#pathCharacterIndex = [i, pathCharIndex]
             } else if (hatIndex !== -1 ) {
@@ -40,9 +50,9 @@ class Field {
     #checkLocation(index) {
         if (index[0] < 0 || index[1] < 0) {
             return 'Game Over! You moved outside of the field!'
-        } else if (this.#field[index[0]][index[1]] === this.holeCharacter) {
+        } else if (this.#field[index[0]][index[1]] === Field.holeCharacter) {
             return 'Game Over! You fell in a hole!'
-        } else if (this.#field[index[0]][index[1]] === this.hatCharacter) {
+        } else if (this.#field[index[0]][index[1]] === Field.hatCharacter) {
             return 'You Won! You found the hat!'
         } else {
             this.#movePathCharacter(index)
@@ -50,8 +60,8 @@ class Field {
         }
     }
     #movePathCharacter(index) {
-        this.#field[this.#pathCharacterIndex[0]][this.#pathCharacterIndex[1]] = this.fieldCharacter
-        this.#field[index[0]][index[1]] = this.pathCharacter
+        this.#field[this.#pathCharacterIndex[0]][this.#pathCharacterIndex[1]] = Field.fieldCharacter
+        this.#field[index[0]][index[1]] = Field.pathCharacter
         this.#pathCharacterIndex = index
     }
     print() { 
@@ -80,5 +90,4 @@ class Field {
     }
 }
 
-export { field }
 export default Field
