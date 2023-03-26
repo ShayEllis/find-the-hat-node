@@ -63,7 +63,7 @@ class Field {
         if (index[0] < 0 || index[1] < 0) {
             return 'Game Over! You moved outside of the field!'
         } else if (this.#field[index[0]][index[1]] === Field.holeCharacter) {
-            return 'Game Over! You fell in a hole!'
+            return 'Game Over! You fell into a hole!'
         } else if (this.#field[index[0]][index[1]] === Field.hatCharacter) {
             return 'You Won! You found the hat!'
         } else {
