@@ -6,35 +6,47 @@ class Field {
     #field
     #pathCharacterIndex
     #hatIndex
-    constructor(field) {
-        this.#field = Field.generateField()
+    constructor(difficulty) {
+        this.#field = Field.generateField(difficulty)
         this.#initializeFieldProperties()
     }
-    static generateField() {
-        const randomIndex = Math.floor(Math.random() * 11)
-        const randomField = Array(10).fill().map(() => {
-            return Array(10).fill().map(() => Field.fieldCharacter )
+    static generateField(difficulty) {
+        let holePercent
+        switch (difficulty) {
+            case 'easy': {
+                holePercent = 2
+                break
+            }
+            case 'medium': {
+                holePercent = 3.75
+                break
+            }
+            case 'hard': {
+                holePercent = 4.5
+                break
+            }
+        }
+        const randomField = Array(14).fill().map(() => {
+            return Array(20).fill().map(() => {
+                const randomIndex = Math.floor(Math.random() * 11)
+                return randomIndex <= holePercent ? Field.holeCharacter : Field.fieldCharacter
+            } )
         })
+        // Place pathCharacter
+        const pathCharR = Math.floor(Math.random() * (randomField.length + 1) / 2)
+        const pathCharC = Math.floor(Math.random() * randomField[0].length)
+        randomField[pathCharR][pathCharC] = Field.pathCharacter
+        // Place hatCharacter
+        const hatRowMin = (randomField.length + 1) / 2
+        const hatRowMax = randomField.length
+        const hatCharR = Math.floor(Math.random() * (hatRowMax - hatRowMin) + hatRowMin)
+        const hatCharC = Math.floor(Math.random() * randomField[0].length)
+        randomField[hatCharR][hatCharC] = Field.hatCharacter
 
-        console.log(randomField)
+        return randomField
 
         //put characters in array based on percent
         //shuffle array rows
-
-        return [
-            ['*', 'O', '░', '░', '░', '░', '░'],
-            ['░', 'O', '░', 'O', 'O', '░', '░'],
-            ['░', 'O', '░', '░', 'O', 'O', '░'],
-            ['░', '░', '░', 'O', '░', '░', '░'],
-            ['O', '░', 'O', '░', 'O', 'O', 'O'],
-            ['░', '░', '░', '░', '░', '░', '░'],
-            ['O', 'O', 'O', 'O', 'O', 'O', '░'],
-            ['O', '░', 'O', '░', '░', '░', '░'],
-            ['░', '░', '░', '░', 'O', 'O', 'O'],
-            ['░', 'O', 'O', 'O', 'O', 'O', 'O'],
-            ['░', '░', '░', '░', 'O', '^', 'O'],
-            ['O', '░', 'O', '░', '░', '░', 'O'],
-        ]
     }
     #initializeFieldProperties() {
         for (let i = 0; i < this.#field.length - 1; i++) {
